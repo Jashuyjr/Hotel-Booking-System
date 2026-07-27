@@ -1,0 +1,1144 @@
+/*
+ * ── THE CSS BOX MODEL ─────────────────────────────────────────
+ *  Every element is a rectangular box:
+ *  ┌──────────────────────────────────┐
+ *  │           MARGIN                 │  ← Space outside border
+ *  │  ┌────────────────────────────┐  │
+ *  │  │         BORDER             │  │  ← Visible line
+ *  │  │  ┌──────────────────────┐  │  │
+ *  │  │  │       PADDING        │  │  │  ← Space inside border
+ *  │  │  │  ┌────────────────┐  │  │  │
+ *  │  │  │  │    CONTENT     │  │  │  │  ← Text / child elements
+ *  │  │  │  └────────────────┘  │  │  │
+ *  │  │  └──────────────────────┘  │  │
+ *  │  └────────────────────────────┘  │
+ *  └──────────────────────────────────┘
+ *  box-sizing: border-box (default here) includes padding+border in width
+ * ============================================================
+ */
+
+/* ════════════════════════════════════════════════════════════
+   0. CSS CUSTOM PROPERTIES (Variables) — :root pseudo-selector
+   ════════════════════════════════════════════════════════════ */
+:root {
+    /* Color Palette */
+    --color-gold:       #C9A84C;
+    --color-gold-light: #E8C97A;
+    --color-gold-dark:  #9E7B2E;
+    --color-dark:       #1A1A2E;
+    --color-dark-mid:   #16213E;
+    --color-dark-card:  #0F3460;
+    --color-cream:      #FDF6E3;
+    --color-cream-dark: #F5EDD6;
+    --color-text:       #2C2C2C;
+    --color-text-muted: #6B6B6B;
+    --color-white:      #FFFFFF;
+    --color-success:    #2E7D32;
+    --color-error:      #C62828;
+    --color-error-bg:   #FFEBEE;
+
+    /* Typography */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'Lato', Arial, sans-serif;
+
+    /* Spacing (Box Model units) */
+    --spacing-xs:  4px;
+    --spacing-sm:  8px;
+    --spacing-md:  16px;
+    --spacing-lg:  24px;
+    --spacing-xl:  40px;
+    --spacing-xxl: 64px;
+
+    /* Border & Shadow */
+    --radius-sm:   4px;
+    --radius-md:   8px;
+    --radius-lg:   16px;
+    --shadow-sm:   0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md:   0 4px 20px rgba(0,0,0,0.12);
+    --shadow-lg:   0 8px 40px rgba(0,0,0,0.18);
+    --shadow-gold: 0 4px 20px rgba(201,168,76,0.25);
+
+    /* Transitions */
+    --transition: 0.25s ease;
+}
+
+/* ════════════════════════════════════════════════════════════
+   1. RESET & BASE STYLES
+   ════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+    /* Box Model: border-box means width includes padding + border */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--color-text);
+    background-color: var(--color-cream);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ════════════════════════════════════════════════════════════
+   2. LAYOUT UTILITIES
+   ════════════════════════════════════════════════════════════ */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    /* Box Model: horizontal centering with auto margins */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+}
+
+/* ════════════════════════════════════════════════════════════
+   3. SITE HEADER — Flexbox Layout Demo
+   ════════════════════════════════════════════════════════════ */
+.site-header {
+    background: var(--color-dark);
+    /* Box Model: padding creates inner space */
+    padding: var(--spacing-md) 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+    border-bottom: 2px solid var(--color-gold);
+}
+
+.header-inner {
+    display: flex;              /* Flexbox: horizontal layout */
+    align-items: center;        /* Flexbox: vertical centering */
+    justify-content: space-between; /* Flexbox: space between logo and nav */
+}
+
+/* Logo — CSS descendant selector */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.logo-icon {
+    color: var(--color-gold);
+    font-size: 1.8rem;
+}
+
+.logo-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--color-white);
+    letter-spacing: 2px;
+}
+
+.logo-sub {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--color-gold);
+    letter-spacing: 4px;
+    font-weight: 700;
+}
+
+/* Navigation — CSS sibling selector & pseudo-selectors */
+.site-nav {
+    display: flex;
+    gap: var(--spacing-xl);
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: var(--spacing-xs) 0;
+    /* Box Model: border-bottom creates underline effect */
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+/* :hover pseudo-selector */
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-gold);
+    border-bottom-color: var(--color-gold);
+}
+
+/* ════════════════════════════════════════════════════════════
+   4. HERO SECTION
+   ════════════════════════════════════════════════════════════ */
+.hero {
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-card) 100%);
+    padding: var(--spacing-xxl) var(--spacing-lg);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative background pattern using CSS pseudo-element */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                radial-gradient(circle at 80% 50%, rgba(201,168,76,0.05) 0%, transparent 60%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero-sub {
+    color: var(--color-gold);
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--color-white);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════════════════
+   5. MAIN CONTENT AREA
+   ════════════════════════════════════════════════════════════ */
+.main-content {
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* ════════════════════════════════════════════════════════════
+   6. FILTER BAR
+   ════════════════════════════════════════════════════════════ */
+.filter-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.filter-btn {
+    /* Box Model: padding + border = visual button shape */
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: 2px solid var(--color-gold);
+    border-radius: 50px;
+    color: var(--color-gold-dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: transparent;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--color-gold);
+    color: var(--color-white);
+    box-shadow: var(--shadow-gold);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7. ROOMS GRID — CSS Grid Layout Demo
+   ════════════════════════════════════════════════════════════ */
+.rooms-grid {
+    display: grid;
+    /* CSS Grid: auto-fill columns, minimum 320px each */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+/* ════════════════════════════════════════════════════════════
+   8. ROOM CARD — Box Model & Flexbox Demo
+   ════════════════════════════════════════════════════════════ */
+.room-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    /* Box Model: border creates a subtle frame */
+    border: 1px solid rgba(201,168,76,0.15);
+    transition: transform var(--transition), box-shadow var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* :hover pseudo-class — CSS state selector */
+.room-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(201,168,76,0.4);
+}
+
+/* Room Type Badge — CSS absolute positioning */
+.room-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    z-index: 2;
+    color: var(--color-white);
+}
+
+.room-badge.standard  { background: #5C6BC0; }
+.room-badge.deluxe    { background: #00897B; }
+.room-badge.suite     { background: #E65100; }
+.room-badge.executive { background: var(--color-gold-dark); }
+
+/* Room Image — CSS background + gradient overlay */
+.room-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.room-img-standard  { background: linear-gradient(160deg, #667eea 0%, #764ba2 100%); }
+.room-img-deluxe    { background: linear-gradient(160deg, #11998e 0%, #38ef7d 100%); }
+.room-img-suite     { background: linear-gradient(160deg, #f093fb 0%, #f5576c 100%); }
+.room-img-executive { background: linear-gradient(160deg, #c79b3d 0%, #f0c040 60%, #a0721e 100%); }
+
+/* Decorative room number overlay */
+.room-number-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-md);
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    color: var(--color-white);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Card Body — Box Model padding demo */
+.room-card-body {
+    padding: var(--spacing-lg);   /* padding = space inside the card border */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    flex: 1;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.room-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-dark);
+}
+
+.room-price {
+    text-align: right;
+}
+
+.price-amount {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-gold-dark);
+    font-family: var(--font-display);
+}
+
+.price-unit {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.room-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+}
+
+.room-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+/* Amenities */
+.amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.amenity-tag {
+    /* Box Model: padding + border-radius = pill shape */
+    padding: 3px 10px;
+    background: var(--color-cream-dark);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* ════════════════════════════════════════════════════════════
+   9. BUTTONS — CSS3 Box Model + Gradients
+   ════════════════════════════════════════════════════════════ */
+.btn {
+    display: inline-block;
+    /* Box Model: padding defines button size */
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition);
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+    color: var(--color-white);
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(201,168,76,0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--color-gold-dark);
+    border: 2px solid var(--color-gold);
+}
+
+.btn-secondary:hover {
+    background: var(--color-gold);
+    color: var(--color-white);
+}
+
+.btn-book {
+    width: 100%;
+    background: var(--color-dark);
+    color: var(--color-white);
+    margin-top: auto;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-dark);
+}
+
+.btn-book:hover {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    transform: translateY(-2px);
+}
+
+.btn[disabled],
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   10. BOOKING PAGE — Two-column layout
+   ════════════════════════════════════════════════════════════ */
+.booking-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+/* ── Room Summary Panel ── */
+.summary-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(201,168,76,0.2);
+    position: sticky;
+    top: 80px;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--color-dark);
+}
+
+.summary-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.summary-badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.summary-img {
+    height: 160px;
+}
+
+.summary-details {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-cream-dark);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px dashed var(--color-cream-dark);
+}
+
+.summary-row:last-child { border-bottom: none; }
+
+.summary-key {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.summary-val {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.summary-price-row .price-highlight {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-gold-dark);
+}
+
+.price-calc-box {
+    margin: 0 var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--color-cream);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(201,168,76,0.3);
+}
+
+.calc-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: var(--spacing-xs) 0;
+}
+
+.calc-total {
+    font-weight: 700;
+    border-top: 1px solid var(--color-gold);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    color: var(--color-gold-dark);
+}
+
+.summary-amenities {
+    padding: var(--spacing-lg);
+}
+
+.amenity-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+}
+
+/* ── Booking Form Panel ── */
+.booking-form-panel {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(201,168,76,0.15);
+}
+
+.form-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.form-subtitle {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ── Fieldset — HTML5 Semantic Grouping ── */
+.form-section {
+    border: none;
+    padding: 0;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-cream-dark);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+.form-section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-gold);
+    display: inline-block;
+}
+
+.optional {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-weight: 400;
+}
+
+/* ── Form Groups — Box Model demo ── */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    letter-spacing: 0.5px;
+    /* Box Model: margin-bottom separates label from input */
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Form Controls — Box Model in action */
+.form-control {
+    width: 100%;
+    /* padding: top/bottom left/right — inner spacing */
+    padding: var(--spacing-md) var(--spacing-md);
+    /* border: defines the box boundary */
+    border: 2px solid #DDD;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-cream);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    /* margin: 0 ensures no extra spacing */
+    margin: 0;
+}
+
+/* :focus pseudo-class — CSS state for keyboard/click focus */
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+    background: var(--color-white);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* AngularJS validation states (applied via ng-class) */
+.has-error .form-control {
+    border-color: var(--color-error);
+    background: #FFF8F8;
+}
+
+.has-success .form-control {
+    border-color: var(--color-success);
+}
+
+/* Error messages (shown via ng-show) */
+.error-msg {
+    display: block;
+    color: var(--color-error);
+    font-size: 0.8rem;
+    margin-top: var(--spacing-xs);
+    padding-left: var(--spacing-xs);
+}
+
+.char-count {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    text-align: right;
+    margin-top: var(--spacing-xs);
+}
+
+.nights-display {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-card) 100%);
+    color: var(--color-white);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: var(--spacing-sm);
+}
+
+.nights-icon { font-size: 1rem; }
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-xl);
+}
+
+.btn-submit {
+    min-width: 200px;
+}
+
+/* Debug box (hidden by default, shown via AngularJS) */
+.form-debug {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: #F0F4FF;
+    border: 1px dashed #9999CC;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-family: monospace;
+    color: #333;
+}
+
+/* ════════════════════════════════════════════════════════════
+   11. ALERTS
+   ════════════════════════════════════════════════════════════ */
+.alert {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.9rem;
+}
+
+.alert-error {
+    background: var(--color-error-bg);
+    color: var(--color-error);
+    border: 1px solid rgba(198,40,40,0.2);
+    border-left: 4px solid var(--color-error);
+}
+
+/* ════════════════════════════════════════════════════════════
+   12. CONFIRMATION PAGE
+   ════════════════════════════════════════════════════════════ */
+.confirmation-page { background: var(--color-cream); }
+
+.confirmation-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.confirmation-hero {
+    text-align: center;
+    padding: var(--spacing-xxl) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-dark-card) 100%);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    color: var(--color-white);
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-gold);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--color-white);
+    margin: 0 auto var(--spacing-lg);
+    box-shadow: var(--shadow-gold);
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.confirmation-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.confirmation-subtitle {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto var(--spacing-xl);
+    line-height: 1.7;
+}
+
+.booking-ref {
+    display: inline-block;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--radius-md);
+}
+
+.ref-label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-xs);
+}
+
+.ref-number {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-white);
+    letter-spacing: 4px;
+}
+
+.confirmation-card {
+    background: var(--color-white);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.conf-section {
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-cream-dark);
+}
+
+.conf-section:last-child { border-bottom: none; }
+
+.conf-section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-gold);
+    display: inline-block;
+}
+
+.conf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.conf-item {
+    padding: var(--spacing-md);
+    background: var(--color-cream);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-cream-dark);
+}
+
+.conf-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+.conf-value {
+    font-weight: 700;
+    color: var(--color-dark);
+}
+
+/* Price Breakdown */
+.conf-price-section { background: var(--color-cream); }
+
+.price-breakdown { max-width: 400px; }
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px dashed #DDD;
+}
+
+.price-total-row {
+    border-top: 2px solid var(--color-gold);
+    border-bottom: none;
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+}
+
+.total-amount {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--color-gold-dark);
+}
+
+.special-requests-text {
+    padding: var(--spacing-md);
+    background: var(--color-cream);
+    border-radius: var(--radius-md);
+    font-style: italic;
+    color: var(--color-text-muted);
+    border-left: 4px solid var(--color-gold);
+}
+
+/* Status */
+.conf-status {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.status-badge {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.status-badge.confirmed {
+    background: #E8F5E9;
+    color: var(--color-success);
+    border: 2px solid var(--color-success);
+}
+
+.booked-at {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+/* Confirmation Actions */
+.conf-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+/* Tech note */
+.tech-note {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: #E8EAF6;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    color: #3949AB;
+    border-left: 4px solid #3949AB;
+    line-height: 1.6;
+}
+
+.tech-note code {
+    font-family: monospace;
+    background: rgba(57,73,171,0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   13. EMPTY STATE & ERROR PAGE
+   ════════════════════════════════════════════════════════════ */
+.empty-state, .error-page {
+    text-align: center;
+    padding: var(--spacing-xxl);
+    grid-column: 1 / -1;
+}
+
+.empty-icon, .error-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.error-icon {
+    color: var(--color-error);
+}
+
+.error-message {
+    color: var(--color-text-muted);
+    margin: var(--spacing-md) 0 var(--spacing-xl);
+    font-size: 1.1rem;
+}
+
+/* ════════════════════════════════════════════════════════════
+   14. SITE FOOTER
+   ════════════════════════════════════════════════════════════ */
+.site-footer {
+    background: var(--color-dark);
+    padding: var(--spacing-xl) 0;
+    margin-top: auto;
+    border-top: 2px solid var(--color-gold);
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-white);
+    font-family: var(--font-display);
+}
+
+.footer-copy,
+.footer-tech {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.82rem;
+}
+
+/* ════════════════════════════════════════════════════════════
+   15. RESPONSIVE DESIGN — Media Queries
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    .conf-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .site-nav {
+        display: none;
+    }
+
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-inner {
+        justify-content: center;
+    }
+
+    .confirmation-hero {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .conf-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+/* ── Print Styles ─────────────────────────────────────────── */
+@media print {
+    .site-header, .site-footer, .conf-actions, .tech-note { display: none; }
+    body { background: white; }
+    .confirmation-hero { background: none; color: black; border: 2px solid black; }
+}
