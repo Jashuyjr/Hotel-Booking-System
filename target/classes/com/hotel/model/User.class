@@ -1,0 +1,22 @@
+Êþº¾   7 *   com/hotel/model/User   java/lang/Object userId I fullName Ljava/lang/String; email password <init> ()V Code
+   
+  LineNumberTable LocalVariableTable this Lcom/hotel/model/User; 	getUserId ()I	     	setUserId (I)V 
+getFullName ()Ljava/lang/String;	      
+setFullName (Ljava/lang/String;)V getEmail	  " 	  setEmail 
+getPassword	  & 
+  
+setPassword 
+SourceFile 	User.java !                  	     
+    	  
+   
+   /     *· ±           
+                 
+   /     *´ ¬                            
+   :     *µ ±                                  
+   /     *´ °                            
+   :     *+µ ±                                    
+   /     *´ !°                         #   
+   :     *+µ !±                           	    $   
+   /     *´ %°                         '   
+   :     *+µ %±                           
+    (    )
